@@ -1,0 +1,6 @@
+framework module Pods_breakpoint_breakpointUITests {
+  umbrella header "Pods-breakpoint-breakpointUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
