@@ -23,4 +23,15 @@ class Helpers {
         
         return alert
     }
+    
+    static func presentBasicActionSheet(title: String, message: String, actionCb: @escaping ()->()) -> UIAlertController {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { all in
+            actionCb()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        return alert
+    }
 }

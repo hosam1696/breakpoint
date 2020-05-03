@@ -12,6 +12,7 @@ class GroupCell: UITableViewCell {
 
     @IBOutlet weak var groupTitle: UILabel!
     @IBOutlet weak var groupDescription: UILabel!
+    @IBOutlet weak var membersCount: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,6 +29,7 @@ class GroupCell: UITableViewCell {
     func setupCell(group: Group) {
         self.groupTitle.text = group.title
         self.groupDescription.text = group.description
+        self.membersCount.text = "\(group.membersCount) Members"
     }
     
 }

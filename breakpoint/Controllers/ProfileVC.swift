@@ -41,9 +41,7 @@ class ProfileVC: UIViewController {
 
     @IBAction func onLogout(_ sender: Any) {
         
-        let alert = Helpers.presentBasicAlert(title: "Notice!", message: "Are you Sure you want to logout from the app?", actionCb: {
-            
-            
+        let alert = Helpers.presentBasicActionSheet(title: "Notice!", message: "Are you Sure you want to logout from the app?", actionCb: {
             
             do {
                 try Auth.auth().signOut()
@@ -56,8 +54,7 @@ class ProfileVC: UIViewController {
             
             
         })
-        
-
+            
         present(alert, animated: true)
         
         

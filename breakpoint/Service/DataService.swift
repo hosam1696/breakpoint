@@ -41,7 +41,8 @@ class DataService {
     
     func createNewPost(withMessage message: String, forId uid: String, withGroupKey groupKey: String?, handler: @escaping (_ status: Bool) -> Void) {
         if groupKey != nil {
-            // Send to group id
+            REF_GROUPS.child(groupKey!).child("messages").childByAutoId().updateChildValues( ["content": message, "senderId": uid, "created_at": Date().description(with: .current)])
+            handler(true)
         } else {
             // send to feed
             REF_FEED.childByAutoId().updateChildValues(["content": message, "senderId": uid, "created_at": Date().description(with: .current)])
@@ -81,12 +82,12 @@ class DataService {
                 return
             }
             var groups: [Group] = []
-            for post in groupsSnapShot {
+            for group in groupsSnapShot {
+                let members = group.childSnapshot(forPath: "users").value as! [String]
+                let title = group.childSnapshot(forPath: "title").value as! String
+                let description = group.childSnapshot(forPath: "description").value as! String
                 
-                let title = post.childSnapshot(forPath: "title").value as! String
-                let description = post.childSnapshot(forPath: "description").value as! String
-                
-                groups.append(Group(title: title, description: description))
+                groups.append(Group(id: group.key, title: title, description: description, members: members))
             }
             handler(groups.reversed())
         })
@@ -132,4 +133,25 @@ class DataService {
         
     }
     
+    
+    func getGroupMessages(byId id: String, handler: @escaping (_ messages: [Post]?) -> Void) {
+        print("Group Id: \(id)")
+        REF_GROUPS.child("\(id)/messages").observe(.value) { (dataSnapShots) in
+            guard let messages = dataSnapShots.children.allObjects as? [DataSnapshot] else {
+                handler(nil)
+                return
+            }
+            var posts: [Post] = []
+            for message in messages {
+                
+                let content = message.childSnapshot(forPath: "content").value as! String
+                let senderId = message.childSnapshot(forPath: "senderId").value as! String
+                let createdAt = message.childSnapshot(forPath: "created_at").value as! String
+                
+                posts.append(Post(content: content, senderId: senderId, createdAt: createdAt))
+            }
+            
+            handler(posts)
+        }
+    }
 }

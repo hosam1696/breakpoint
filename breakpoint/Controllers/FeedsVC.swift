@@ -15,6 +15,9 @@ class FeedsVC: UIViewController {
     let dataService = DataService.instance
     var feedPosts: [Post] = []
     
+    override var preferredStatusBarStyle: UIStatusBarStyle  {
+        return .lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

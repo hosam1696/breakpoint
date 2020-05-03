@@ -21,10 +21,12 @@ enum Identifiers: String {
     case FeedsPostTableViewCell = "FeedsPostTableViewCell"
     case UserCell = "UserCellTableViewCell"
     case GroupCell = "GroupCell"
+    case GroupVC = "GroupVC"
 }
 
 enum Segues: String {
     case TabBar = "tabBarSegue"
+    case GroupVCSegue = "GroupVCSegue"
 }
 
 

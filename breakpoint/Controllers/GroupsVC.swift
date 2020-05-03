@@ -20,14 +20,30 @@ class GroupsVC: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        
+
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == Segues.GroupVCSegue.rawValue {
+//            guard let groupVC = segue.destination as? GroupVC else {return}
+//
+//            let group = sender as! Group
+//
+//            groupVC.setupView(group: group)
+//
+//
+//            present(groupVC, animated: true, completion: nil)
+//
+//        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         getGroups()
     }
 
     
     func getGroups() {
-        
-        
         DataService.instance.getAllGroups { (allGroups) in
             if allGroups != nil {
                 self.groups = allGroups!
@@ -55,8 +71,22 @@ extension GroupsVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+//        self.performSegue(withIdentifier: Segues.GroupVCSegue.rawValue, sender: groups[indexPath.row])
+        guard let groupVC = storyboard?.instantiateViewController(identifier: Identifiers.GroupVC.rawValue) as? GroupVC else {return}
+        groupVC.modalPresentationStyle = .fullScreen
+        groupVC.setupView(group: self.groups[indexPath.row])
+        
+        self.present(groupVC, animated: true)
+        
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(80)
     }
 }
+
+
+
 
